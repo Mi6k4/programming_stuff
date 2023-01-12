@@ -1,1 +1,2 @@
-My coding stuff will be there for a while
+Some stuff of mine will be here
+coding and cv 
