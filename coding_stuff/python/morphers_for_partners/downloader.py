@@ -302,7 +302,6 @@ def download_function(root_path):
 
 def upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name):
     for name in morphed_file_name:
-        #upload_path=morphed_path+str(now)+name
         upload_path = morphed_path + name + str(now)+".xlsx"
         y.upload(name,upload_path)
         os.remove(name)
@@ -332,9 +331,13 @@ def main():
     upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name)
 
 
-
-main()
-#data_frame = geb("GB.XLSX")
-#file_path, new_file_name = data_placer(list_of_file_path[1], data_frame, list_of_file_name[1])
-#print(file_path)
-#print(new_file_name)
+def morpher(list_of_file_name,list_of_file_path,list_dir_name):
+    morphed_file_name=[]
+    for i in range(len(list_of_file_name)):
+        morpher=morpher_list(list_dir_name[i])
+        if morpher != None:
+            data_frame = morpher(list_of_file_name[i])
+            new_file_name = data_placer(list_of_file_path[i], data_frame, list_of_file_name[i])
+            morphed_file_name.append(new_file_name)
+            print(morphed_file_name)
+    return

@@ -8,7 +8,7 @@ import pandas as pd
 y = yadisk.YaDisk('406760da5b1345a88999f0acb1ef95bf', '7ecb5577edb643d3a07ce020292db4b6',
                   "AQAEA7qkBXctAAfNlAAXrxr49UN8l0uBHNszaAo")
 
-gp_conn = 'postgresql://zeppelin:R63v5NspNsSEem@c-c9qbht031ah0gtrlftmj.rw.mdb.yandexcloud.net:5432/warehouse'
+gp_conn =
 class DwsConn:
     def __init__(self, conn_string):
         self.conn_string = conn_string
