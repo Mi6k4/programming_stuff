@@ -1,3 +1,5 @@
-import functions_file as ff
+string_to_print="rhflksngflnasfnsaljfksdngfjsngfk.smdlgfjnsad.lfljsadbfkjsadnfkjnbas" \
+                "jhdfbkwjhbefkjlhesbfnnkasdbfjhbsadkfjkjlasehfkjasdnbf,msadbfknbsadfkjbaskdfjnmsadbfmnas"
 
-print(ff.password)
+
+print(string_to_print)
