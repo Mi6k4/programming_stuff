@@ -300,16 +300,33 @@ def download_function(root_path):
     return list_of_file_name,list_of_file_path,list_of_dirs_name
 
 
-def upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name):
+#def upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name):
+#    for name in morphed_file_name:
+#        upload_path = morphed_path + name + str(now)+".xlsx"
+#        y.upload(name,upload_path)
+#        os.remove(name)
+#    for name in list_of_file_name:
+#        os.remove(name)
+#    for i in range(len(list_of_file_name)):
+#        move_path=archive_path+list_of_file_name[i]+" archived "+str(now)
+#        y.move(list_of_file_path[i],move_path)
+
+
+def upload_function(morphed_file_name):
     for name in morphed_file_name:
-        upload_path = morphed_path + name + str(now)+".xlsx"
-        y.upload(name,upload_path)
+        upload_path = morphed_path + name + str(now) + '.xlsx'
+        y.upload(name, upload_path)
         os.remove(name)
+
+def delete_function(list_of_file_name):
     for name in list_of_file_name:
         os.remove(name)
+
+def archive_function(list_of_file_name,list_of_file_path):
     for i in range(len(list_of_file_name)):
-        move_path=archive_path+list_of_file_name[i]+" archived "+str(now)
-        y.move(list_of_file_path[i],move_path)
+        move_path=archive_path + list_of_file_name[i] + ' archived ' + str(now)
+        y.move(list_of_file_path[i], move_path)
+
 
 
 
@@ -328,16 +345,23 @@ def main():
             new_file_name= data_placer(list_of_file_path[i],data_frame,list_of_file_name[i])
             morphed_file_name.append(new_file_name)
             print(morphed_file_name)
-    upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name)
+
+    upload_function(morphed_file_name)
+    delete_function(list_of_file_name)
+    archive_function(list_of_file_name,list_of_file_path)
+    #upload_and_move_function(morphed_file_name,list_of_file_path,list_of_file_name)
 
 
-def morpher(list_of_file_name,list_of_file_path,list_dir_name):
-    morphed_file_name=[]
-    for i in range(len(list_of_file_name)):
-        morpher=morpher_list(list_dir_name[i])
-        if morpher != None:
-            data_frame = morpher(list_of_file_name[i])
-            new_file_name = data_placer(list_of_file_path[i], data_frame, list_of_file_name[i])
-            morphed_file_name.append(new_file_name)
-            print(morphed_file_name)
-    return
+
+
+main()
+#def morpher(list_of_file_name,list_of_file_path,list_dir_name):
+#    morphed_file_name=[]
+#    for i in range(len(list_of_file_name)):
+#        morpher=morpher_list(list_dir_name[i])
+#        if morpher != None:
+#            data_frame = morpher(list_of_file_name[i])
+#            new_file_name = data_placer(list_of_file_path[i], data_frame, list_of_file_name[i])
+#            morphed_file_name.append(new_file_name)
+#            print(morphed_file_name)
+ #   return
