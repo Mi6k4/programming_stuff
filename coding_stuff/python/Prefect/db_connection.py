@@ -1,9 +1,9 @@
 from prefect import task, flow
 import psycopg2
 
-credentials_gp = {'host': 'c-c9qe5iqo1b8v7pejudrn.rw.mdb.yandexcloud.net', 'database': 'warehouse', 'port': 6432,
+credentials_gp = {'host': '', 'database': 'warehouse', 'port': 6432,
                       'user': 'zeppelin',
-                      'password': 'R63v5NspNsSEem', 'schema': 'public'}
+                      'password': '', 'schema': 'public'}
 
 @task
 def update_task():

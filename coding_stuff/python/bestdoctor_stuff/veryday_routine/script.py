@@ -1,9 +1,9 @@
 import psycopg2
 
-greenplum = psycopg2.connect(host='172.21.216.13',
+greenplum = psycopg2.connect(host='',
                              database='warehouse',
                              user='zeppelin',
-                             password='R63v5NspNsSEem')
+                             password='')
 gp_cursor = greenplum.cursor()
 print('I am connected to gp')
 
