@@ -1,95 +1,8 @@
-from datetime import datetime,timezone
-import json
-import ast
+import psycopg2
+from typing import List,AnyStr
+gp_con = 'postgresql://zeppelin:R63v5NspNsSEem@172.21.216.13:5432/warehouse'
 
-digit='string'
-list_of_digits=[1,2,3,4,5]
-for i in list_of_digits:
-    print(f'{i}')
-print(f'{digit}')
-
-list_of_types_and_ids = [('FROM_CLIENT', 2444346826), ('SYSTEM', 2444334050), ('TO_CLIENT', 2444329661), ('AUTOREPLY', 2444327091)]
-new_list=[]
-
-for tp in list_of_types_and_ids:
-    tp_low=tp[0].lower()
-    new_list.append((tp_low,tp[1]))
-    print(new_list)
-
-print(new_list)
-
-tables_list=(('bb_doctors_doctorcurator', 340),
-('bb_doctors_doctorcurator', 409),
-('bb_doctors_doctorcurator', 427),
-('bb_doctors_doctorcurator', 486),
-('bb_doctors_doctorcurator', 501),
-)
-
-for table in tables_list:
-    print(table[0])
-
-
-
-source_list=[
-    ('bestdoctor_homer_external_tables','homer_tables'),
-    ('bestdoctor_buktop_external_tables','buktop_tables'),
-    ('bestdoctor_bart_external_tables','bart_tables')
-]
-
-for source in source_list:
-    print(source[0],source[1])
-
-
-
-a = datetime(2022, 6, 7, 5, 43, 13, 212461, tzinfo=timezone.utc)
-a_timstamp=a.timestamp()
-formated_a=a.strftime('%Y-%m-%d %H:%M:%S.%f %z').replace(":", "")
-
-if type(a) is datetime:
-    print(a)
-
-print(a,type(a))
-print(a_timstamp,type(a_timstamp))
-print(formated_a,type(formated_a))
-
-
-
-#str='ООО \'БрОКС" (бе'
-#str.replace("'",'"')
-#str_1=str.replace("'",'"')
-#print(str_1)
-
-
-original_string = "sgedhs dfgjfjkln [([]),([]),....]"
-
-modifiend_String=original_string.replace('[','',1).replace(']','',0)
-modifiend_String = modifiend_String[:-1]
-print(modifiend_String)
-
-
-list = '''[("bb_supplementary_agreements_supplementaryagreement", 335), ("bb_expertise_acts_expertiseact", 266), ("bb_registries_registry", 190),
-        ("bb_medical_program_clinicinprogram", 287), ("bb_pricelists_pricelist", 310), ("bb_telemedicine_consultation", 343), ("bb_clinics_clinic", 241),
-        ("bb_clinics_clinicnetwork", 244), ("bb_company_reports_reportfiles", 259), ("bb_companies_holding", 255), ("bb_appeals_appeal", 198),
-        ("bb_registries_registryrecordmedicalservice", 350), ("bb_supplementary_agreements_payment", 339), ("bb_service_periods_companyservicecontract", 631),
-        ("bb_registries_registryrecord", 189)]'''
-
-print(type(list))
-serialized_list_of_tuples = json.dumps(list)
-print(type(serialized_list_of_tuples))
-retrieved_list_of_tuples = json.loads(serialized_list_of_tuples)
-print(type(retrieved_list_of_tuples))
-
-print(retrieved_list_of_tuples)
-
-
-my_list=ast.literal_eval(list)
-print(type(my_list))
-print(my_list)
-
-
-
-
-all_tables_list = [
+tables_list = (
     ('bb_supplementary_agreements_supplementaryagreement', 335),
     ('bb_registries_registry', 190),
     ('bb_slots_slot', 317),
@@ -98,9 +11,11 @@ all_tables_list = [
     ('bb_pricelists_pricelist', 310),
     ('bb_complaints_complaint', 192),
     ('bb_telemedicine_consultation', 343),
+    ('bb_chat_conversation', 501),
     ('bb_clinics_clinic', 241),
     ('bb_vzr_policy_vzrpolicy', 170),
     ('bb_vzr_policy_vzrpurchasebill', 171),
+    ('bb_complaints_complaintcategory', 191),
     ('bb_newsletters_newsletter', 194),
     ('bb_client_account_management_accountuser', 239),
     ('bb_clinics_additionalclinicmedtypeinfo', 240),
@@ -169,6 +84,7 @@ all_tables_list = [
     ('bb_bestdoctor_stationar', 37),
     ('bb_bestdoctor_vzrpolicy', 38),
     ('bb_bestdoctor_companyserviceperiod', 39),
+    ('bb_mail_email', 138),
     ('bb_bestdoctor_patientemailverificationaction', 166),
     ('bb_gis_postgisspatialrefsys', 223),
     ('bb_leads_lead', 282),
@@ -176,6 +92,7 @@ all_tables_list = [
     ('bb_orders_orderstatus', 323),
     ('bb_references_documenttemplate', 331),
     ('bb_supplementary_agreements_payment', 339),
+    ('bb_nps_nps', 419),
     ('bb_myauth_groupconfig', 425),
     ('bb_attachment_lists_patientlistforclinic_clinic_events', 434),
     ('bb_myauth_myuser_user_permissions', 452),
@@ -203,6 +120,7 @@ all_tables_list = [
     ('bb_medical_standards_medicalstandard', 422),
     ('bb_approvals_approvementservicecomplex', 424),
     ('bb_attachment_lists_employeeattachmentlist_detached_patients', 432),
+    ('bb_companies_company_hr_user', 440),
     ('bb_expertise_acts_expertiseact_documents', 445),
     ('bb_pricelists_medicalserviceinfo_service_tree_node_categories', 459),
     ('bb_documents_documentattachment', 496),
@@ -522,6 +440,7 @@ all_tables_list = [
     ('bb_covid_bot_telegrampatientchattodesktransport', 213),
     ('bb_chat_chattodesktagrelation_tags', 435),
     ('bb_medical_program_programtoclinictreelink', 295),
+    ('bb_pricelists_medicalserviceinfo', 309),
     ('bb_voximplant_voximplantuser', 342),
     ('bb_franchises_medicaltypeprogramfranchise', 399),
     ('bb_slots_slot_program_options', 461),
@@ -744,6 +663,7 @@ all_tables_list = [
     ('bb_dialogues_dialoguethread', 721),
     ('bb_chunked_upload_chunkedupload', 726),
     ('bb_vzr_policy_borderovzrpolicy', 741),
+    ('bb_chat_message', 111),
     ('bb_bestdoctor_mkb10record', 123),
     ('bb_bestdoctor_expertiseactrecord', 141),
     ('bb_waffle_switch', 153),
@@ -751,6 +671,8 @@ all_tables_list = [
     ('bb_bestdoctor_recommendationreaction', 173),
     ('bb_chat_chattodesktransport', 200),
     ('bb_programms_programm', 311),
+    ('bb_pricelists_medicalserviceinfomedicalservice', 349),
+    ('bb_mail_emailevent', 397),
     ('bb_vzr_policy_vzrprovider', 537),
     ('bb_claims_claimresult', 577),
     ('bb_pricelists_actualmedicalserviceinfo', 605),
@@ -784,34 +706,65 @@ all_tables_list = [
     ('bb_patient_bills_franchisedebt_patient_bills', 682),
     ('bb_sales_clinicgroupupsaletermpgview', 686),
     ('bb_vzr_policy_vzrpartnerprogram', 742),
+)
+
+
+
+important_tables_list = [
+    ('bb_supplementary_agreements_supplementaryagreement', 335), ('bb_registries_registry', 190),
+    ('bb_patients_patient', 305), ('bb_medical_program_clinicinprogram', 287), ('bb_pricelists_pricelist', 310),
+    ('bb_telemedicine_consultation', 343), ('bb_clinics_clinic', 241), ('bb_clinics_clinicnetwork', 244),
+    ('bb_company_reports_reportfiles', 259), ('bb_expertise_acts_expertiseact', 266), ('bb_companies_holding', 255),
+    ('bb_registries_registryrecordmedicalservice', 350), ('bb_supplementary_agreements_payment', 339),
+    ('bb_service_periods_companyservicecontract', 631), ('bb_registries_registryrecord', 189)
 ]
-print(len(all_tables_list))
-
-set(all_tables_list)
-print(len(set(all_tables_list)))
-#print(len(s))
 
 
-str_template = "My name is {}, and I am a {}."
+class DwsConn:
+    def __init__(self, conn_string):
+        self.conn_string = conn_string
 
-first = ('Mike', 'Engineer')
-second = ('Ann', 'Teacher')
+    def select(self, query: str) -> List[tuple]:
+        with psycopg2.connect(self.conn_string) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                return cursor.fetchall()
 
-print(f"Person 1: {str_template.format(*first)}")
-print(f"Person 2: {str_template.format(*second)}")
+    def execute(self, query: str) -> None:
+        with psycopg2.connect(self.conn_string) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                conn.commit()
+def main():
+    DWH = DwsConn(conn_string=gp_con)
+    data_1 = DWH.select("select viewname,definition from pg_views where definition like '%bestdoctor_bb%' and schemaname not in ('bestdoctor_bb','big_brother','bestdoctor_bb_external_tables')")
+    data_2 = DWH.select("select matviewname,definition from pg_matviews where definition like '%bestdoctor_bb%' and schemaname not in ('bestdoctor_bb','big_brother','bestdoctor_bb_external_tables')")
+
+    tables_to_update=[]
+    valuable_tables_list=[]
+
+    for table in tables_list:
+        for ddl in data_1:
+            if table[0] in ddl[1]:
+                if table[0] not in tables_to_update:
+                    tables_to_update.append(table[0])
+                    valuable_tables_list.append((table[0],table[1]))
+
+    for table in tables_list:
+        for ddl in data_2:
+            if table[0] in ddl[1]:
+                if table[0] not in tables_to_update:
+                    tables_to_update.append(table[0])
+                    valuable_tables_list.append((table[0], table[1]))
+
+    final_list= [i for i in important_tables_list if i in valuable_tables_list ]
+    for table in valuable_tables_list:
+        if table not in final_list:
+            final_list.append(table)
+    print(final_list)
+    if final_list==important_tables_list:
+        print(True)
+    else: raise ValueError("important_tables_list is not correct, check it")
 
 
-
-first_number =1
-delta_number=first_number
-last_number=10
-while delta_number<=last_number:
-    print(delta_number)
-    delta_number+=1
-    print(delta_number)
-
-
-stringa=10000
-delta=(stringa//20)
-
-print(delta)
+main()
